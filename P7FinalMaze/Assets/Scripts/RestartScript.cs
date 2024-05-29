@@ -5,11 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class RestartScript : MonoBehaviour
 {
+    void Update()
+    {
+        // Check if the Enter key is pressed
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            RestartGame();
+        }
+    }
+
     public void RestartGame()
     {
-        // Reset time scale in case it was paused
-        Time.timeScale = 1;
-        // Reload the current scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1f; // Resume the game
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Restart the current scene
     }
 }

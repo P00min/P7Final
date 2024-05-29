@@ -2,50 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class SpiderAI : MonoBehaviour
 {
-    public float detectionRange = 10f;
-    public float attackRange = 2f;
+    public Transform player;
+    public float detectionRadius = 10f;
+    public float attackRadius = 2f;
+    public float moveSpeed = 3.5f;
     public int damage = 1;
-    public float attackCooldown = 1f;
+    public float attackCooldown = 2f;
 
-    private Transform player;
-    private PlayerHealth playerHealth;
     private float lastAttackTime;
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
-        playerHealth = player.GetComponent<PlayerHealth>();
-        lastAttackTime = -attackCooldown;
+        lastAttackTime = -attackCooldown; // So that the spider can attack immediately if in range
     }
 
     void Update()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        if (distanceToPlayer <= detectionRange)
+        if (distanceToPlayer <= detectionRadius)
         {
             MoveTowardsPlayer();
-
-            if (distanceToPlayer <= attackRange && Time.time >= lastAttackTime + attackCooldown)
+            if (distanceToPlayer <= attackRadius && Time.time >= lastAttackTime + attackCooldown)
             {
                 AttackPlayer();
+                lastAttackTime = Time.time;
             }
         }
     }
 
     void MoveTowardsPlayer()
     {
-        // Add movement logic here (e.g., using NavMeshAgent)
-        transform.LookAt(player);
-        // Assuming NavMeshAgent is used
-        GetComponent<UnityEngine.AI.NavMeshAgent>().SetDestination(player.position);
+        Vector3 direction = (player.position - transform.position).normalized;
+        transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
     }
 
     void AttackPlayer()
     {
-        lastAttackTime = Time.time;
-        playerHealth.TakeDamage(damage);
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.TakeDamage(damage);
+        }
     }
 }

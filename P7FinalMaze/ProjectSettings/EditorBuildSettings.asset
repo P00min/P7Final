@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/VentsMaze.unity
+    guid: b02581aa16ee35644b482286c9aaecb3
   m_configObjects: {}

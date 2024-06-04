@@ -10,14 +10,16 @@ public class GameTimer : MonoBehaviour
     public TMP_Text timerText; // Changed from Text to TMP_Text
     public GameObject gameOverScreen;
 
+    private bool gameStarted = false;
+
     void Update()
     {
-        if (timeRemaining > 0)
+        if (gameStarted && timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
             UpdateTimerUI();
         }
-        else
+        else if (timeRemaining <= 0 && gameStarted)
         {
             EndGame();
         }
@@ -36,5 +38,10 @@ public class GameTimer : MonoBehaviour
         gameOverScreen.SetActive(true);
         // Pause the game
         Time.timeScale = 0;
+    }
+
+    public void StartTimer()
+    {
+        gameStarted = true;
     }
 }
